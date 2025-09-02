@@ -11,5 +11,11 @@ jobs:
     name: 'terraform init'
     runs-on: anmol
     steps:
-      - name: HashiCorp - Setup Terraform
-        uses: hashicorp/setup-terraform@v2.0.3
+       - name: Checkout
+        uses: actions/checkout@v5.0.0
+        
+      - name: Install Terraform
+        uses: little-core-labs/install-terraform@v2.0.0
+        with:
+          version: 4.42.0
+        
