@@ -1,0 +1,12 @@
+name: terraform_workflow
+
+on:
+  push:
+    branches: 
+      - 'main'
+      - 'features'
+      
+jobs:
+  terraforminit:
+    name: 'terraform init'
+    runs-on: anmol
