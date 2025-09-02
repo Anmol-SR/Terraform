@@ -5,3 +5,10 @@ on:
     branches:
       - 'main'
       - 'feature'
+jobs: 
+  first_job:
+    name: terraform init
+    runs-on: anmol
+    steps:
+      - name: ak first git workflow
+        
