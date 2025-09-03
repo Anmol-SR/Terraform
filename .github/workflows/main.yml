@@ -1,9 +1,10 @@
 name: terraform-workflow
-on: 
-  push:
-    branches:
-      - 'main'
-      - 'dev'
+# on: 
+#   push:
+#     branches:
+#       - 'main'
+#       - 'dev'
+on: workflow_dispatch
 
 permissions: 
   id-token: write
