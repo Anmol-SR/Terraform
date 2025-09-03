@@ -1,39 +1,79 @@
-name: terraform_workflow
-
-on:
+name: terraform-workflow
+on: 
   push:
-    branches: 
+    branches:
       - 'main'
-      - 'features'
-      
+      - 'dev'
+
+permissions: 
+  id-token: write
+  contents: read
+
 jobs:
-  terraformjob:
-    name: 'terraform init'
+  terraform-init-plan:
     runs-on: anmol
     steps:
-       - name: Checkout
-         uses: actions/checkout@v5.0.0
+      - name: Checkout
+        uses: actions/checkout@v5.0.0
 
-       - name: Install Terraform
-         uses: little-core-labs/install-terraform@v2.0.0
-         with:
-           version: 4.42.0
-           
-       - name: Azure Login
-         uses: Azure/login@v2.3.0
+      - name: Install Terraform
+        uses: little-core-labs/install-terraform@v2.0.0
+        with:
+          version: 1.13.1
+          
+      - name: Azure Login
+        uses: Azure/login@v2.3.0
+        with:
+          client-id: 32124
+          tenant-id: 123414
+          subscription-id: 1243134
 
-       - name: Terraform init azurerm backend
-         uses: ahmedig/terraform-azurerm-backend@v4
-         with:
-         azure_credentials: 
-         resource_group_name: 'ak-rg'
-         container_name: 
-         storage_account_name: 
-         file_name: # optional, default is terraform.tfstate
-         subscription_id: # optional, default is empty
-         tf_working_directory: # optional, default is .
-           
-       - name: Terraform Validation
-         uses: tf-actions/validate@v1.0.0
-       
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+        working-directory: environment/dev
+      
+      - name: Terraform Init
+        id: init
+        run: terraform init -input=false
+        working-directory: environment/dev
+      
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+        working-directory: environment/dev
+      
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -input=false
+        continue-on-error: true
+        working-directory: environment/dev
         
+  terraform-apply:
+    environment: dev
+    needs: terraform-init-plan
+    runs-on: anmol
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5.0.0
+          
+      - name: Azure Login
+        uses: Azure/login@v2.3.0
+        with:
+          client-id: 32124
+          tenant-id: 123414
+          subscription-id: 1243134
+      
+      - name: Terraform Init
+        id: init
+        run: terraform init -input=false
+        working-directory: environment/dev
+        
+      - name: terraform-apply
+        id: apply
+        run: terraform apply --auto-approve
+        continue-on-error: true
+        working-directory: environment/dev
+    
+    
