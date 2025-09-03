@@ -32,23 +32,23 @@ jobs:
         id: fmt
         run: terraform fmt -check
         continue-on-error: true
-        working-directory: Terraform/todoapp_infra
+        working-directory: todoapp_infra
       
       - name: Terraform Init
         id: init
         run: terraform init -input=false
-        working-directory: Terraform/todoapp_infra
+        working-directory: todoapp_infra
       
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
-        working-directory: Terraform/todoapp_infra
+        working-directory: todoapp_infra
       
       - name: Terraform Plan
         id: plan
         run: terraform plan -no-color -input=false
         continue-on-error: true
-        working-directory: Terraform/todoapp_infra
+        working-directory: todoapp_infra
         
   terraform-apply:
     environment: dev
@@ -68,12 +68,12 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform init -input=false
-        working-directory: Terraform/todoapp_infra
+        working-directory: todoapp_infra
         
       - name: terraform-apply
         id: apply
         run: terraform apply --auto-approve
         continue-on-error: true
-        working-directory: Terraform/todoapp_infra
+        working-directory: todoapp_infra
     
     
