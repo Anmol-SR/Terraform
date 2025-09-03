@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   terraform-init-plan:
-    runs-on: anmol
+    runs-on: akrunner
     steps:
       - name: Checkout
         uses: actions/checkout@v5.0.0
@@ -53,7 +53,7 @@ jobs:
   terraform-apply:
     environment: dev
     needs: terraform-init-plan
-    runs-on: anmol
+    runs-on: akrunner
     steps:
       - name: Checkout
         uses: actions/checkout@v5.0.0
